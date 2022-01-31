@@ -1,0 +1,20 @@
+workflows:
+    ios-app:
+        name: iOS App
+        environment:
+            vars:
+               XCODE_PROJECT: "AimyboxUI" # <-- Put the name of your Xcode workspace here
+               XCODE_SCHEME: "AimyboxUI" # <-- Put the name of your Xcode scheme here
+            xcode: latest
+            cocoapods: default
+        scripts:
+            - name: Install CocoaPods dependencies
+              script: |
+                                pod install
+            - name: Build ipa for distribution
+              script: |
+                                - xcodebuild build -project "MyXcodeWorkspace.xcodeproj" -scheme "MyScheme" CODE_SIGN_INDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+        artifacts:
+            - /tmp/xcodebuild_logs/*.log
+            - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
+            - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
